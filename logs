@@ -1,0 +1,38 @@
+vagrant@master:~$ kubectl logs -f virt-launcher-testvm-lkbk4 -c compute
+{"component":"virt-launcher","level":"info","msg":"Collected all requested hook sidecar sockets","pos":"manager.go:68","timestamp":"2021-04-07T07:57:29.986350Z"}
+{"component":"virt-launcher","level":"info","msg":"Sorted all collected sidecar sockets per hook point based on their priority and name: map[]","pos":"manager.go:71","timestamp":"2021-04-07T07:57:29.986418Z"}
+{"component":"virt-launcher","level":"info","msg":"Connecting to libvirt daemon: qemu:///system","pos":"libvirt.go:419","timestamp":"2021-04-07T07:57:30.006457Z"}
+{"component":"virt-launcher","level":"info","msg":"Connecting to libvirt daemon failed: virError(Code=38, Domain=7, Message='Failed to connect socket to '/var/run/libvirt/libvirt-sock': No such file or directory')","pos":"libvirt.go:427","timestamp":"2021-04-07T07:57:30.009126Z"}
+{"component":"virt-launcher","level":"info","msg":"libvirt version: 6.6.0, package: 13.fc32 (Unknown, 2021-01-21-11:33:00, )","subcomponent":"libvirt","thread":"41","timestamp":"2021-04-07T07:57:30.019000Z"}
+{"component":"virt-launcher","level":"info","msg":"hostname: testvm","subcomponent":"libvirt","thread":"41","timestamp":"2021-04-07T07:57:30.019000Z"}
+{"component":"virt-launcher","level":"error","msg":"internal error: Child process (dmidecode -q -t 0,1,2,3,4,11,17) unexpected exit status 1: /dev/mem: No such file or directory","pos":"virCommandWait:2741","subcomponent":"libvirt","thread":"41","timestamp":"2021-04-07T07:57:30.019000Z"}
+{"component":"virt-launcher","level":"info","msg":"Connected to libvirt daemon","pos":"libvirt.go:435","timestamp":"2021-04-07T07:57:30.551321Z"}
+{"component":"virt-launcher","level":"info","msg":"Registered libvirt event notify callback","pos":"client.go:454","timestamp":"2021-04-07T07:57:30.553099Z"}
+{"component":"virt-launcher","level":"info","msg":"Marked as ready","pos":"virt-launcher.go:73","timestamp":"2021-04-07T07:57:30.553291Z"}
+{"component":"virt-launcher","level":"info","msg":"Received signal terminated","pos":"virt-launcher.go:442","timestamp":"2021-04-07T07:57:37.580929Z"}
+{"component":"virt-launcher","level":"info","msg":"stopping cmd server","pos":"server.go:448","timestamp":"2021-04-07T07:57:37.581021Z"}
+{"component":"virt-launcher","level":"error","msg":"timeout on stopping the cmd server, continuing anyway.","pos":"server.go:459","timestamp":"2021-04-07T07:57:38.581160Z"}
+{"component":"virt-launcher","level":"info","msg":"Exiting...","pos":"virt-launcher.go:471","timestamp":"2021-04-07T07:57:38.581279Z"}  
+{"component":"virt-launcher","level":"error","msg":"Failed to reap process -1","pos":"virt-launcher.go:497","reason":"no child processes","timestamp":"2021-04-07T07:57:38.584556Z"}
+
+
+
+vagrant@master:~$ kubectl logs -f  virt-launcher-testvmi-nocloud-kjdcx -c compute
+{"component":"virt-launcher","level":"info","msg":"Collected all requested hook sidecar sockets","pos":"manager.go:68","timestamp":"2021-04-07T08:48:48.444371Z"}
+{"component":"virt-launcher","level":"info","msg":"Sorted all collected sidecar sockets per hook point based on their priority and name: map[]","pos":"manager.go:71","timestamp":"2021-04-07T08:48:48.444457Z"}
+{"component":"virt-launcher","level":"info","msg":"Connecting to libvirt daemon: qemu:///system","pos":"libvirt.go:419","timestamp":"2021-04-07T08:48:48.476212Z"}
+{"component":"virt-launcher","level":"info","msg":"Connecting to libvirt daemon failed: virError(Code=38, Domain=7, Message='Failed to connect socket to '/var/run/libvirt/libvirt-sock': No such file or directory')","pos":"libvirt.go:427","timestamp":"2021-04-07T08:48:48.498063Z"}
+{"component":"virt-launcher","level":"info","msg":"libvirt version: 6.6.0, package: 13.fc32 (Unknown, 2021-01-21-11:33:00, )","subcomponent":"libvirt","thread":"42","timestamp":"2021-04-07T08:48:48.503000Z"}
+{"component":"virt-launcher","level":"info","msg":"hostname: testvmi-nocloud","subcomponent":"libvirt","thread":"42","timestamp":"2021-04-07T08:48:48.503000Z"}
+{"component":"virt-launcher","level":"error","msg":"internal error: Child process (dmidecode -q -t 0,1,2,3,4,11,17) unexpected exit status 1: /dev/mem: No such file or directory","pos":"virCommandWait:2741","subcomponent":"libvirt","thread":"42","timestamp":"2021-04-07T08:48:48.503000Z"}
+{"component":"virt-launcher","level":"info","msg":"Connected to libvirt daemon","pos":"libvirt.go:435","timestamp":"2021-04-07T08:48:49.002505Z"}
+{"component":"virt-launcher","level":"info","msg":"Registered libvirt event notify callback","pos":"client.go:454","timestamp":"2021-04-07T08:48:49.004345Z"}
+{"component":"virt-launcher","level":"info","msg":"Marked as ready","pos":"virt-launcher.go:73","timestamp":"2021-04-07T08:48:49.004446Z"}
+panic: timed out waiting for domain to be defined
+
+goroutine 1 [running]:
+main.waitForDomainUUID(0x45d964b800, 0xc0003dacc0, 0xc00009e8a0, 0x1df5340, 0xc00017df00, 0xc0003dacc0)
+        cmd/virt-launcher/virt-launcher.go:226 +0x3f4
+main.main()
+        cmd/virt-launcher/virt-launcher.go:451 +0xfe6
+{"component":"virt-launcher","level":"error","msg":"dirty virt-launcher shutdown","pos":"virt-launcher.go:532","reason":"exit status 2","timestamp":"2021-04-07T08:53:49.015510Z"}

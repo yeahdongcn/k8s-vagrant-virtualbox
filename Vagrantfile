@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
     master.vm.provision :shell, privileged: false, inline: $provision_master_node
   end
 
-  %w{node1 node2 node3}.each_with_index do |name, i|
+  %w{node1}.each_with_index do |name, i|
     config.vm.define name do |node|
       node.vm.provider "virtualbox" do |vb|
         vb.name = "node#{i + 1}"
@@ -63,8 +63,6 @@ apt-get update && apt-get upgrade -y
 # Create local host entries
 echo "10.0.0.10 master" >> /etc/hosts
 echo "10.0.0.11 node1" >> /etc/hosts
-echo "10.0.0.12 node2" >> /etc/hosts
-echo "10.0.0.13 node3" >> /etc/hosts
 
 # disable swap
 swapoff -a
@@ -80,7 +78,8 @@ cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 apt-get -qq update
-apt-get -qq install -y kubelet kubeadm kubectl
+# apt-get -qq install -y kubelet kubeadm kubectl
+apt-get -qq install -y kubelet=1.18.13-00 kubeadm=1.18.13-00 kubectl=1.18.13-00
 apt-mark hold kubelet kubectl kubeadm
 
 # Set external DNS
@@ -131,15 +130,17 @@ sudo systemctl restart kubelet
 
 # Use kubectl to deploy the KubeVirt operator
 export VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases | grep tag_name | grep -v -- '-rc' | head -1 | awk -F': ' '{print $2}' | sed 's/,//' | xargs)
+export VERSION=v0.38.1
 echo $VERSION
 kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/kubevirt-operator.yaml
 # Again use kubectl to deploy the KubeVirt custom resource definitions
 kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/kubevirt-cr.yaml
 # Install virtctl
 VERSION=$(kubectl get kubevirt.kubevirt.io/kubevirt -n kubevirt -o=jsonpath="{.status.observedKubeVirtVersion}")
+VERSION=v0.38.1
 ARCH=$(uname -s | tr A-Z a-z)-$(uname -m | sed 's/x86_64/amd64/') || windows-amd64.exe
 echo ${ARCH}
-curl -L -o virtctl https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/virtctl-${VERSION}-${ARCH}
+curl -s -L -o virtctl https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/virtctl-${VERSION}-${ARCH}
 chmod +x virtctl
 sudo install virtctl /usr/local/bin
 SHELL
