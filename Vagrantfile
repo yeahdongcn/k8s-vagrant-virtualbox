@@ -6,6 +6,7 @@ Vagrant.configure("2") do |config|
       vb.name = "master"
       vb.memory = 2048
       vb.cpus = 2
+      vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
     end
     master.vm.box = "ubuntu/bionic64"
     master.disksize.size = "25GB"
@@ -20,6 +21,7 @@ Vagrant.configure("2") do |config|
         vb.name = "node#{i + 1}"
         vb.memory = 2048
         vb.cpus = 2
+        vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
       end
       node.vm.box = "ubuntu/bionic64"
       node.disksize.size = "25GB"
@@ -117,7 +119,9 @@ kubectl create -f /vagrant/kube-flannel.yml
 
 # Set alias on master for vagrant and root users
 echo "alias k=/usr/bin/kubectl" >> $HOME/.bash_profile
-sudo echo "alias k=/usr/bin/kubectl" >> /root/.bash_profile
+source $HOME/.bash_profile
+sudo bash -c 'sudo echo "alias k=/usr/bin/kubectl" >> /root/.bash_profile'
+sudo bash -c 'source /root/.bash_profile'
 
 # Install the etcd client
 sudo apt install etcd-client

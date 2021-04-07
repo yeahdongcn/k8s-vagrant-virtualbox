@@ -1,1 +1,5 @@
 .DS_Store
+.vagrant/*
+ubuntu-bionic-18.04-cloudimg-console.log
+join.sh
+id_rsa.pub
